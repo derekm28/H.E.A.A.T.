@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import LogIn from './LogInPage';
 import SignUpPage from './SignUpPage';
 import NikePage from './NikePage';
-import JordanPage from './JordanPage';
+import ShoePage from './ShoePage';
 import MensPage from './MensPage';
 import WomensPage from './WomensPage';
 import YeezyPage from './YeezyPage';
@@ -45,16 +45,8 @@ function Routes({ login, signup }) {
                     <LogIn login={login} />
                 </Route>
 
-                <Route exact path='/nike'>
-                    <NikePage />
-                </Route>
-
-                <Route exact path='/jordan'>
-                    <JordanPage />
-                </Route>
-
-                <Route exact path='/yeezy'>
-                    <YeezyPage />
+                <Route exact path='/shoes/:shoeBrand'>
+                    <ShoePage />
                 </Route>
 
                 <Route exact path='/mens'>
@@ -63,26 +55,6 @@ function Routes({ login, signup }) {
 
                 <Route exact path='/womens'>
                     <WomensPage />
-                </Route>
-
-                <Route exact path='/balenciaga'>
-                    <BalenciagaPage />
-                </Route>
-
-                <Route exact path='/prada'>
-                    <PradaPage />
-                </Route>
-
-                <Route exact path='/gucci'>
-                    <GucciPage />
-                </Route>
-
-                <Route exact path='/dg'>
-                    <DGPage />
-                </Route>
-
-                <Route exact path='/givenchy'>
-                    <GivenchyPage />
                 </Route>
 
                 <PrivateRoute exact path="/profile">

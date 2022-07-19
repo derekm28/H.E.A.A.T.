@@ -77,7 +77,7 @@ function HomePage(props) {
         <div className='HomePage'>
             <Jumbotron fluid>
                 <Container>
-                    <h1>Heat</h1>
+                    <h1>H.E.A.A.T.</h1>
                     <p>
                         High Expectations At All Times.
                     </p>

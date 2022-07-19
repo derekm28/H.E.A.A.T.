@@ -68,7 +68,7 @@ function NikePage(sneakerId) {
     const nikes = {
         method: 'GET',
         url: 'https://v1-sneakers.p.rapidapi.com/v1/sneakers',
-        params: { limit: '100', brand: 'nike' },
+        params: { limit: '100', brand: 'dior' },
         headers: {
             'x-rapidapi-key': 'd35e6f2cf6msh582d393a4408760p1fd4ddjsna38953b14404',
             'x-rapidapi-host': 'v1-sneakers.p.rapidapi.com'
@@ -134,11 +134,8 @@ function NikePage(sneakerId) {
 
                         </Col>
                         <Col xs={6} md={4}>
-                            <Image src="https://i1.wp.com/sportsfinding.com/wp-content/uploads/2020/02/nike-swoosh-wikipedia.jpg?fit=580%2C350&ssl=1" roundedCircle thumbnail />
+                            <Image src="https://pngimg.com/uploads/nike/small/nike_PNG18.png" roundedCircle thumbnail />
                         </Col>
-                        {/* <Col xs={6} md={4}>
-                            <Image src="https://i1.wp.com/sportsfinding.com/wp-content/uploads/2020/02/nike-swoosh-wikipedia.jpg?fit=580%2C350&ssl=1" thumbnail />
-                        </Col> */}
                     </Row>
                 </Container>
             </Jumbotron>
