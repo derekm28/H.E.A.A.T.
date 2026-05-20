@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "16.14.0"
+    "node": ">=18.18.0"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -15,15 +15,14 @@
     "react": "^18.2.0",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^18.2.0",
-    "react-router-dom": "5.2",
-    "react-scripts": "^4.0.3",
-    "web-vitals": "^2.1.4"
+    "react-router-dom": "5.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
     "lint": "eslint --fix ."
   },
   "eslintConfig": {
@@ -45,8 +44,12 @@
     ]
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.4",
     "eslint-plugin-import": "^2.24.1",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.31.10"
+    "eslint-plugin-react": "^7.31.10",
+    "jsdom": "^26.1.0",
+    "vite": "^7.1.7",
+    "vitest": "^3.2.4"
   }
 }

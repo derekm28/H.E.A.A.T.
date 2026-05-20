@@ -4,9 +4,18 @@ import Carousel from "react-bootstrap/Carousel";
 import { Card, Button } from "react-bootstrap";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
+import ModalCard from "./Modal";
+import SkeletonCards from "./SkeletonCards";
+import {
+    filterSneakersWithWorkingThumbnails,
+    getThumbnailUrl,
+} from "./sneakerMedia";
+import { getHeatScoreData } from "./heatScore";
 
 function HomePage() {
     const [sneakers, setSneakers] = useState(null);
+    const [sneakerModalData, setSneakerModalData] = useState({});
+    const [showModal, setShowModal] = useState(false);
 
     const home = {
         method: "GET",
@@ -22,47 +31,66 @@ function HomePage() {
         async function getSneakers() {
             axios.request(home).then(res => {
                 const { results } = res.data;
-                setSneakers(
-                    results.filter(s => {
-                        const { smallImageUrl } = s.media;
-                        return smallImageUrl && smallImageUrl !== "";
-                    }),
+                filterSneakersWithWorkingThumbnails(results).then(
+                    filteredSneakers => {
+                        setSneakers(filteredSneakers);
+                    },
                 );
             });
         }
         getSneakers();
-    });
+    }, []);
 
     function SneakerDisplay() {
         return (
             <div className="row justify-content-center ">
-                {sneakers
-                    ? sneakers.map(s => (
-                          <Card
-                              key={s.id}
-                              className="mr-2"
-                              title={s.title}
-                              brand={s.brand}
-                              colorway={s.colorway}
-                              style={{ width: "14rem" }}
-                              shoe={s.shoe}
-                              name={s.name}
-                          >
-                              <Card.Body>
-                                  <Card.Img
-                                      variant="top"
-                                      src={s.media.smallImageUrl}
-                                  />
-                                  <Card.Title>{s.title}</Card.Title>
-                                  <Card.Text>
-                                      <div>{s.colorway}</div>
-                                      <div>Release Date: {s.releaseDate}</div>
-                                      <div>Retail Price: ${s.retailPrice}</div>
-                                      <Button variant="primary">Save</Button>
-                                  </Card.Text>
-                              </Card.Body>
-                          </Card>
-                      ))
+                {sneakers === null ? (
+                    <SkeletonCards cardWidth="14rem" />
+                ) : sneakers.length
+                    ? sneakers.map(s => {
+                          const heat = getHeatScoreData(s);
+                          return (
+                              <Card
+                                  key={s.id}
+                                  className="mr-2 mb-3 sneaker-card"
+                                  title={s.title}
+                                  brand={s.brand}
+                                  colorway={s.colorway}
+                                  style={{ width: "14rem" }}
+                                  shoe={s.shoe}
+                                  name={s.name}
+                              >
+                                  <Card.Body className="d-flex flex-column sneaker-card-body">
+                                      <div
+                                          className={`heat-badge heat-${heat.tierKey}`}
+                                      >
+                                          Heat {heat.score}
+                                      </div>
+                                      <Card.Img
+                                          variant="top"
+                                          src={getThumbnailUrl(s)}
+                                          className="sneaker-card-image"
+                                      />
+                                      <Card.Title>{s.title}</Card.Title>
+                                      <Card.Text>
+                                          <div>{s.colorway}</div>
+                                          <div>Release Date: {s.releaseDate}</div>
+                                          <div>Retail Price: ${s.retailPrice}</div>
+                                      </Card.Text>
+                                      <Button
+                                          className="d-block mx-auto mt-auto"
+                                          variant="primary"
+                                          onClick={() => {
+                                              setSneakerModalData(s);
+                                              setShowModal(true);
+                                          }}
+                                      >
+                                          Details
+                                      </Button>
+                                  </Card.Body>
+                              </Card>
+                          );
+                      })
                     : null}
             </div>
         );
@@ -116,6 +144,11 @@ function HomePage() {
             </div>
             <div>
                 <SneakerDisplay />
+                <ModalCard
+                    sneaker={sneakerModalData}
+                    show={showModal}
+                    onHide={() => setShowModal(false)}
+                />
             </div>
         </div>
     );

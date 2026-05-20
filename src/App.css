@@ -1,0 +1,190 @@
+.sneaker-card {
+    border: 0;
+    border-radius: 14px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+    transition:
+        transform 200ms ease,
+        box-shadow 200ms ease;
+    overflow: hidden;
+}
+
+.sneaker-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 35px rgba(15, 23, 42, 0.18);
+}
+
+.sneaker-card-body {
+    position: relative;
+    gap: 0.35rem;
+}
+
+.sneaker-card-body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    pointer-events: none;
+    background: linear-gradient(
+        130deg,
+        rgba(248, 250, 252, 0.3),
+        rgba(147, 197, 253, 0.13),
+        rgba(253, 224, 71, 0.1)
+    );
+    opacity: 0;
+    transition: opacity 220ms ease;
+}
+
+.sneaker-card:hover .sneaker-card-body::before {
+    opacity: 1;
+}
+
+.sneaker-card-image {
+    border-radius: 10px;
+    transition: transform 200ms ease;
+    margin-top: 0.4rem;
+}
+
+.sneaker-card:hover .sneaker-card-image {
+    transform: scale(1.03);
+}
+
+.heat-badge {
+    display: inline-block;
+    width: fit-content;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.heat-legendary {
+    background: #ef4444;
+    color: #fff;
+}
+
+.heat-hot {
+    background: #f97316;
+    color: #fff;
+}
+
+.heat-warm {
+    background: #facc15;
+    color: #1f2937;
+}
+
+.heat-mild {
+    background: #cbd5e1;
+    color: #1f2937;
+}
+
+.modal-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem 0.9rem;
+}
+
+.modal-details-grid > div {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.6rem;
+    background: #f8fafc;
+}
+
+@media (max-width: 768px) {
+    .modal-details-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.skeleton-card {
+    pointer-events: none;
+}
+
+.skeleton-pill,
+.skeleton-image,
+.skeleton-line,
+.skeleton-button {
+    position: relative;
+    overflow: hidden;
+    background: #e2e8f0;
+}
+
+.skeleton-pill::after,
+.skeleton-image::after,
+.skeleton-line::after,
+.skeleton-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.65) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    animation: skeleton-shimmer 1.25s infinite;
+}
+
+.skeleton-pill {
+    width: 84px;
+    height: 22px;
+    border-radius: 999px;
+}
+
+.skeleton-image {
+    width: 100%;
+    height: 145px;
+    border-radius: 10px;
+}
+
+.skeleton-line {
+    height: 12px;
+    border-radius: 6px;
+}
+
+.skeleton-line-title {
+    height: 18px;
+    width: 80%;
+}
+
+.skeleton-line-short {
+    width: 68%;
+}
+
+.skeleton-button {
+    width: 100px;
+    height: 38px;
+    border-radius: 8px;
+}
+
+@keyframes skeleton-shimmer {
+    to {
+        transform: translateX(100%);
+    }
+}
+
+.navbar-search {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-search .form-control {
+    width: 220px;
+}
+
+@media (max-width: 768px) {
+    .navbar-search {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .navbar-search .form-control {
+        width: 100%;
+    }
+}

@@ -4,6 +4,7 @@ import ShoePage from "./ShoePage";
 import MensPage from "./MensPage";
 import WomensPage from "./WomensPage";
 import HomePage from "./HomePage";
+import SearchPage from "./SearchPage";
 
 /**Site-wide routes
  *
@@ -30,6 +31,10 @@ function Routes() {
 
                 <Route exact path="/womens">
                     <WomensPage />
+                </Route>
+
+                <Route exact path="/search">
+                    <SearchPage />
                 </Route>
 
                 <Redirect exact to="/" />
