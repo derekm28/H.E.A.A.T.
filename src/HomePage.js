@@ -4,9 +4,12 @@ import Carousel from "react-bootstrap/Carousel";
 import { Card, Button } from "react-bootstrap";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
+import ModalCard from "./Modal";
 
 function HomePage() {
     const [sneakers, setSneakers] = useState(null);
+    const [sneakerModalData, setSneakerModalData] = useState({});
+    const [showModal, setShowModal] = useState(false);
 
     const home = {
         method: "GET",
@@ -47,6 +50,7 @@ function HomePage() {
                               style={{ width: "14rem" }}
                               shoe={s.shoe}
                               name={s.name}
+                              onClick={setShowModal}
                           >
                               <Card.Body>
                                   <Card.Img
@@ -58,7 +62,15 @@ function HomePage() {
                                       <div>{s.colorway}</div>
                                       <div>Release Date: {s.releaseDate}</div>
                                       <div>Retail Price: ${s.retailPrice}</div>
-                                      <Button variant="primary">Save</Button>
+                                      <Button
+                                          variant="primary"
+                                          onClick={() => {
+                                              setSneakerModalData(s);
+                                              setShowModal();
+                                          }}
+                                      >
+                                          Details
+                                      </Button>
                                   </Card.Text>
                               </Card.Body>
                           </Card>
@@ -116,6 +128,11 @@ function HomePage() {
             </div>
             <div>
                 <SneakerDisplay />
+                <ModalCard
+                    sneaker={sneakerModalData}
+                    show={showModal}
+                    onHide={() => setShowModal(false)}
+                />
             </div>
         </div>
     );
