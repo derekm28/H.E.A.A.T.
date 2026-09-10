@@ -2,7 +2,7 @@
 
 A tennis shoe release date app. Built with React, Express, Node.Js and PostgreSQL.
 
-Site: https://heaat.herokuapp.com/
+Site: https://h-e-a-a-t.vercel.app/
 
 API: KicksDB StockX API via the server-side `/api/sneakers` proxy
 
