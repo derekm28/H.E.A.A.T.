@@ -4,7 +4,7 @@ A tennis shoe release date app. Built with React, Express, Node.Js and PostgreSQ
 
 Site: https://heaat.herokuapp.com/
 
-API: https://rapidapi.com/tg4-solutions-tg4-solutions-default/api/v1-sneakers/details
+API: KicksDB StockX API via the server-side `/api/sneakers` proxy
 
 Current Features:
 
@@ -48,3 +48,9 @@ This project is configured for Vercel with SPA rewrites via `vercel.json`, so cl
 ## API setup
 
 The app uses the KicksDB StockX API through the server-side `/api/sneakers` proxy. Set `KICKSDB_API_KEY` in the local environment or in the deployment provider before running the app. See `.env.example` for the required variable.
+
+<img width="2240" height="1143" alt="Screenshot 2026-05-20 at 5 40 32 PM" src="https://github.com/user-attachments/assets/a5be9f23-90bf-425a-afd1-86b8671531d6" />
+
+<img width="2240" height="1143" alt="Screenshot 2026-05-20 at 5 41 00 PM" src="https://github.com/user-attachments/assets/9d263ac4-d473-4ae1-9880-bc82fdcd9093" />
+
+<img width="2240" height="1143" alt="Screenshot 2026-05-20 at 5 41 21 PM" src="https://github.com/user-attachments/assets/9d0cdf0e-3c7b-429e-919d-223988d19447" />
