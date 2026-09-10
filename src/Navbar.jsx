@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import Form from "react-bootstrap/Form";
+import FormControl from "react-bootstrap/FormControl";
+import Button from "react-bootstrap/Button";
+import { useHistory } from "react-router-dom";
 
 function NavBar() {
+    const history = useHistory();
+    const [query, setQuery] = useState("");
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        const trimmed = query.trim();
+        if (!trimmed) {
+            return;
+        }
+        history.push(`/search?q=${encodeURIComponent(trimmed)}`);
+    }
+
     function navBar() {
         return (
             <Navbar fixed="top" bg="light" variant="light">
@@ -27,6 +43,9 @@ function NavBar() {
                         <NavDropdown.Item href="/shoes/balenciaga">
                             Balenciaga
                         </NavDropdown.Item>
+                        <NavDropdown.Item href="/shoes/louis-vuitton">
+                            Louis Vuitton
+                        </NavDropdown.Item>
                         <NavDropdown.Item href="/shoes/prada">
                             Prada
                         </NavDropdown.Item>
@@ -41,6 +60,23 @@ function NavBar() {
                         </NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
+                <Form
+                    inline
+                    className="navbar-search"
+                    onSubmit={handleSubmit}
+                >
+                    <FormControl
+                        type="search"
+                        placeholder="Search sneakers"
+                        className="mr-2"
+                        value={query}
+                        onChange={event => setQuery(event.target.value)}
+                        aria-label="Search sneakers"
+                    />
+                    <Button variant="outline-dark" type="submit">
+                        Search
+                    </Button>
+                </Form>
             </Navbar>
         );
     }
