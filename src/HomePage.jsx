@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Carousel from "react-bootstrap/Carousel";
 import { Card, Button } from "react-bootstrap";
 import Jumbotron from "react-bootstrap/Jumbotron";
@@ -11,34 +10,20 @@ import {
     getThumbnailUrl,
 } from "./sneakerMedia";
 import { getHeatScoreData } from "./heatScore";
+import { getSneakers as fetchSneakers } from "./sneakerApi";
 
 function HomePage() {
     const [sneakers, setSneakers] = useState(null);
     const [sneakerModalData, setSneakerModalData] = useState({});
     const [showModal, setShowModal] = useState(false);
 
-    const home = {
-        method: "GET",
-        url: "https://v1-sneakers.p.rapidapi.com/v1/sneakers",
-        params: { limit: "100" },
-        headers: {
-            "x-rapidapi-key":
-                "d35e6f2cf6msh582d393a4408760p1fd4ddjsna38953b14404",
-            "x-rapidapi-host": "v1-sneakers.p.rapidapi.com",
-        },
-    };
     useEffect(() => {
         async function getSneakers() {
-            axios.request(home).then(res => {
-                const { results } = res.data;
-                filterSneakersWithWorkingThumbnails(results).then(
-                    filteredSneakers => {
-                        setSneakers(filteredSneakers);
-                    },
-                );
-            });
+            const results = await fetchSneakers();
+            const filteredSneakers = await filterSneakersWithWorkingThumbnails(results);
+            setSneakers(filteredSneakers);
         }
-        getSneakers();
+        getSneakers().catch(() => setSneakers([]));
     }, []);
 
     function SneakerDisplay() {

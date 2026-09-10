@@ -45,3 +45,6 @@ npm run preview
 ## Vercel deployment
 
 This project is configured for Vercel with SPA rewrites via `vercel.json`, so client routes like `/shoes/nike` resolve correctly.
+## API setup
+
+The app uses the KicksDB StockX API through the server-side `/api/sneakers` proxy. Set `KICKSDB_API_KEY` in the local environment or in the deployment provider before running the app. See `.env.example` for the required variable.

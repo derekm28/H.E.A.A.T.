@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import { Card, Button } from "react-bootstrap";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
@@ -12,6 +11,7 @@ import {
 } from "./sneakerMedia";
 import { getHeatScoreData } from "./heatScore";
 import { trackEvent } from "./analytics";
+import { getSneakers as fetchSneakers } from "./sneakerApi";
 
 function SearchPage() {
     const location = useLocation();
@@ -38,52 +38,10 @@ function SearchPage() {
 
             setSneakers(null);
             try {
-                const response = await axios.get(
-                    "https://v1-sneakers.p.rapidapi.com/v1/sneakers",
-                    {
-                        params: { limit: "100", name: query },
-                        headers: {
-                            "x-rapidapi-key":
-                                "d35e6f2cf6msh582d393a4408760p1fd4ddjsna38953b14404",
-                            "x-rapidapi-host": "v1-sneakers.p.rapidapi.com",
-                        },
-                    },
-                );
-                let { results } = response.data;
-
-                if (!results || results.length === 0) {
-                    const fallbackResponse = await axios.get(
-                        "https://v1-sneakers.p.rapidapi.com/v1/sneakers",
-                        {
-                            params: { limit: "100" },
-                            headers: {
-                                "x-rapidapi-key":
-                                    "d35e6f2cf6msh582d393a4408760p1fd4ddjsna38953b14404",
-                                "x-rapidapi-host": "v1-sneakers.p.rapidapi.com",
-                            },
-                        },
-                    );
-                    results = fallbackResponse.data?.results || [];
-                }
-
-                const normalizedQuery = query.toLowerCase();
-                const locallyMatched = results.filter(sneaker => {
-                    const fields = [
-                        sneaker?.title,
-                        sneaker?.brand,
-                        sneaker?.shoe,
-                        sneaker?.colorway,
-                        sneaker?.styleId,
-                        sneaker?.name,
-                    ]
-                        .filter(Boolean)
-                        .join(" ")
-                        .toLowerCase();
-                    return fields.includes(normalizedQuery);
-                });
+                const results = await fetchSneakers({ query });
 
                 const filteredSneakers =
-                    await filterSneakersWithWorkingThumbnails(locallyMatched);
+                    await filterSneakersWithWorkingThumbnails(results);
                 if (!cancelled) {
                     setSneakers(filteredSneakers);
                 }
