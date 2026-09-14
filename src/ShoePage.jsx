@@ -83,8 +83,9 @@ function ShoePage() {
                 const filteredSneakers =
                     await filterSneakersWithWorkingThumbnails(results);
                 setSneakers(filteredSneakers);
-            } catch (e) {
-                console.log("There is an error somewhere");
+            } catch (error) {
+                console.error("Unable to load sneakers:", error);
+                setSneakers([]);
             }
         }
         getSneakers();
