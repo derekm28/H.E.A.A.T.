@@ -10,6 +10,10 @@ function ModalCard(props) {
     const thumbnailUrl = getThumbnailUrl(sneaker);
     const heat = getHeatScoreData(sneaker || {});
     const [shareStatus, setShareStatus] = useState(null);
+    const [activeTab, setActiveTab] = useState("details");
+    const [history, setHistory] = useState("");
+    const [historyLoading, setHistoryLoading] = useState(false);
+    const [historyError, setHistoryError] = useState("");
     const stockxUrl = sneaker?.links?.stockX;
     const goatUrl = sneaker?.links?.goat;
     const flightClubUrl = sneaker?.links?.flightClub;
@@ -45,6 +49,10 @@ function ModalCard(props) {
     useEffect(() => {
         if (props.show) {
             setShareStatus(null);
+            setActiveTab("details");
+            setHistory("");
+            setHistoryError("");
+            setHistoryLoading(false);
         }
     }, [props.show, sneaker?.id]);
 
@@ -90,6 +98,61 @@ function ModalCard(props) {
         }
     }
 
+    async function loadHistory() {
+        setActiveTab("history");
+
+        if(history || historyLoading){
+            return;
+        }
+
+        setHistoryLoading(true);
+        setHistoryError("");
+
+        trackEvent("history_tab_opened", {
+            sneakerId: sneaker?.id,
+            sneakerTitle: sneaker?.title,
+        });
+
+        try {
+            const response = await fetch("/api/shoe-history", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    product: {
+                        title: sneaker?.title,
+                        brand: sneaker?.brand,
+                        model: sneaker?.shoe,
+                        colorway: sneaker?.colorway,
+                        releaseDate: sneaker?.releaseDate,
+                        retailPrice: sneaker?.retailPrice,
+                        styleId: sneaker?.styleId,
+                        description: sneaker?.description,
+                    },
+                }),
+            })
+
+            const body = await response.json();
+
+            if(!response.ok) {
+                throw new Error(body.error || "Unable to generate history");
+            }
+
+            setHistory(body.summary);
+            trackEvent("history_loaded", {
+                sneakerId: sneaker?.id,
+            });
+        } catch (_error) {
+            setHistoryError("History is unavailable right now");
+            trackEvent("history_error", {
+                sneakerId: sneaker?.id,
+            });
+        }finally{
+            setHistoryLoading(false);
+        }
+    }
+
     return (
         <div>
             <Modal
@@ -119,6 +182,36 @@ function ModalCard(props) {
                             style={{ maxHeight: "260px" }}
                         />
                     ) : null}
+                    <div
+                        className="nav nav-tabs mb-3"
+                        role="tablist"
+                        aria-label="Sneaker information"
+                    >
+                        <button
+                            type="button"
+                            className={`nav-link ${
+                                activeTab === "details" ? "active" : ""
+                            }`}
+                            onClick={() => setActiveTab("details")}
+                            role="tab"
+                            aria-selected={activeTab === "details"}
+                        >
+                            Details
+                        </button>
+                        <button
+                            type="button"
+                            className={`nav-link ${
+                                activeTab === "history" ? "active" : ""
+                            }`}
+                            onClick={loadHistory}
+                            role="tab"
+                            aria-selected={activeTab === "history"}
+                            >
+                                History
+                        </button>
+                    </div>
+                    {activeTab === "details" ? (
+                        <>
                     <div className="modal-details-grid">
                         <div>
                             <strong>Brand:</strong>
@@ -225,6 +318,33 @@ function ModalCard(props) {
                             ) : null}
                         </div>
                     ) : null}
+                    </> 
+                    ):(
+                        <div aria-live="polite">
+                            {historyLoading ? (
+                                <p>Generating history...</p>
+                            ) : historyError ? (
+                                <div className="text-danger">
+                                    <p>{historyError}</p>
+                                    <Button
+                                        variant="outline-primary"
+                                        onClick={loadHistory}
+                                    >
+                                        Try again
+                                    </Button>
+                                </div>
+                            ) : history ? (
+                                <>
+                                    <p>{history}</p>
+                                    <small className="text-muted">
+                                        Generated from available product data.
+                                    </small>
+                                </>
+                            ) : (
+                                <p>Select History to generate a summary.</p>
+                            )}
+                        </div>
+                    )}
                 </Modal.Body>
                 <Modal.Footer>
                     <div className="mr-auto">
