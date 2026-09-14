@@ -19,7 +19,9 @@ export default async function handler(req, res) {
 
     try {
         const result = await client.responses.create({
-            model: "gpt-5-mini",
+            model: "gpt-4o-mini",
+            max_output_tokens: 300, // Safeguard against unexpected runaways
+            // model: "gpt-5-mini",
             instructions:
                 `Write a concise, engaging sneaker history summary using only
                 the supplied facts. Do not invent collaborations, designers, athletes, 
